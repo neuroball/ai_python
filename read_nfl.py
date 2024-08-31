@@ -17,3 +17,6 @@ def read_nfl_data():
 def main():
     nfl_data = read_nfl_data()
     print(nfl_data)
+
+if __name__ == "__main__":
+    main()
