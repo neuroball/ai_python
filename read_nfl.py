@@ -13,10 +13,23 @@ def read_nfl_data():
     
     return nfl_data
 
+"""
+In the data we just read in, the fourth column is the player
+and the 8th column is the passing yards. Get the sum of
+yards from column 8 where the 4th column value is
+"Aaron Rodgers"
+"""
+def get_aaron_rogers_passing_yards(nfl_data):  
+    aaron_rogers_passing_yards = 0
+    for row in nfl_data:
+        if row[3] == "Aaron Rodgers":
+            aaron_rogers_passing_yards += int(row[7])
+    
+    return aaron_rogers_passing_yards
 
 def main():
     nfl_data = read_nfl_data()
-    print(nfl_data)
+    print(get_aaron_rogers_passing_yards(nfl_data))
 
 if __name__ == "__main__":
     main()
