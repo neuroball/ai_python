@@ -1,35 +1,47 @@
-#!/usr/bin/env python3
-"""
-open the csv file called "data/nfl_offensive_stats.csv" and read in
-the csv data from the file.
-"""
 import csv
 
-
 def read_nfl_data():
+    file_path = "data/nfl_offensive_stats.csv"
+    data = []
     
-    with open("data/nfl_offensive_stats.csv", "r") as csvfile:
-        nfl_data = list(csv.reader(csvfile))
+    with open(file_path, "r") as file:
+        csv_reader = csv.reader(file)
+        next(csv_reader)  # Skip the header row
+        
+        for row in csv_reader:
+            data.append(row)
     
-    return nfl_data
+    return data
 
-"""
-In the data we just read in, the fourth column is the player
-and the 8th column is the passing yards. Get the sum of
-yards from column 8 where the 4th column value is
-"Aaron Rodgers"
-"""
-def get_aaron_rogers_passing_yards(nfl_data):  
-    aaron_rogers_passing_yards = 0
-    for row in nfl_data:
-        if row[3] == "Aaron Rodgers":
-            aaron_rogers_passing_yards += int(row[7])
+
+def calculate_qb_passing_yards(data):
+    qb_passing_yards = {}
     
-    return aaron_rogers_passing_yards
+    for row in data:
+        position = row[2]
+        player = row[3]
+        yards = int(row[7])
+        
+        if position == "QB":
+            if player in qb_passing_yards:
+                qb_passing_yards[player] += yards
+            else:
+                qb_passing_yards[player] = yards
+    
+    return qb_passing_yards
+
+
+def print_sorted_total_passing_yards(data):
+    sorted_total_passing_yards = sorted(data.items(), key=lambda x: x[1], reverse=True)
+    
+    for player, yards in sorted_total_passing_yards:
+        print(f"{player}: {yards} yards")
+
 
 def main():
-    nfl_data = read_nfl_data()
-    print(get_aaron_rogers_passing_yards(nfl_data))
+    data = read_nfl_data()
+    qb_passing_yards = calculate_qb_passing_yards(data)
+    print_sorted_total_passing_yards(qb_passing_yards)
 
 if __name__ == "__main__":
     main()
